@@ -1,31 +1,43 @@
+<script setup>
+import { ref, watch } from "vue";
+import srcQuiz from "./data/quizes";
+import QuizCard from "./components/QuizCard.vue";
+
+const quizes = ref(srcQuiz);
+const search = ref("");
+
+watch(search, () => {
+  quizes.value = srcQuiz.filter((quiz) => {
+    return quiz.title.toLowerCase().includes(search.value.toLowerCase());
+  });
+});
+</script>
+
 <template>
   <main>
     <header>
       <h1 id="title">Quizez</h1>
-      <input id="search-input" type="text" placeholder="Search..." />
+      <input
+        v-model.trim="search"
+        id="search-input"
+        type="text"
+        placeholder="Search..."
+      />
     </header>
     <section id="quiz-container">
-      <div class="card">
-        <img src="./assets/photo-1542831371-29b0f74f9713.jpg" alt="programming" width="30%">
+      <!-- <div v-for="quiz in quizes" :key="quiz.id" class="card">
+        <img :src="quiz.img" :alt="quiz.title" />
         <div class="card-body">
-          <h2>Programming</h2>
-          <p>2 question</p>
+          <h2>{{ quiz.title }}</h2>
+          <p>{{ quiz.questions.length }} Question</p>
         </div>
-      </div>
-      <div class="card">
-        <img src="./assets/photo-1542831371-29b0f74f9713.jpg" alt="programming" width="30%">
-        <div class="card-body">
-          <h2>Programming</h2>
-          <p>2 question</p>
-        </div>
-      </div>
+      </div> -->
+      <QuizCard v-for="quiz in quizes" :key="quiz.id" :quiz="quiz"/>
     </section>
   </main>
 </template>
-
 <style scoped>
-
-main{
+main {
   width: 70%;
   margin: auto;
 }
@@ -35,12 +47,12 @@ header {
   align-items: center;
   justify-content: space-between;
 }
-#title{
+#title {
   font-size: 2rem;
   color: #212121;
   font-weight: 400;
 }
-#search-input{
+#search-input {
   height: 2rem;
   padding: 0 1rem;
   border: none;
@@ -50,41 +62,16 @@ header {
   outline: none;
   background-color: #9c9c9c9c;
 }
-#search-input:focus{
+#search-input:focus {
   background-color: #e0e0e0;
   color: #212121;
   border: 1px solid #9c9c9c9c;
   border-radius: 3px;
 }
 
-#quiz-container{
+#quiz-container {
   display: flex;
   flex-wrap: wrap;
   margin-top: 20px;
-}
-
-.card{
-  width: 270px;
-  margin-right: 30px;
-  margin-bottom: 30px;
-  border-radius: 5px;
-  overflow: hidden;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.card img{
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  margin: 0;
-}
-
-
-.card-body{
-  padding: 0 15px;
-}
-
-.card-body h2{
-  font-weight: bold;
 }
 </style>
